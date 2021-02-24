@@ -1,0 +1,12 @@
+[
+  {
+      "variantName": "default",
+      "type": "QueryDesigner",
+      "props": {
+        "queryFormulaDisplay":false,
+        "showDisplayQuery":true
+
+      }
+  }
+]
+
