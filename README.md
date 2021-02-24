@@ -8,7 +8,7 @@ In addition, it has a completely dynamic structure and you can shape all functio
 
 You can get pieces of code that can be run in a variety of languages with Designer output. Currently, there are customizations output configurations in js and c # languages.
 
-Detailed information about all these dynamic structures and configurations is available on the wiki page.
+Detailed information about all these dynamic structures and configurations is available on the [wiki page](https://github.com/mcaninci/react-dynamic-query-designer/wiki/Designer-Dynamic-Structure-and-Features).
 
 
 # Designer User Interface and Some Features
