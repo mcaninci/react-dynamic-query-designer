@@ -3,7 +3,7 @@ import { Brackets } from '../components/brackets.js';
 import { FunctionComponent } from '../components/functionComponent.js';
 import { Operator } from '../components/operator.js';
 import { FixedValue } from '../components/fixedValue';
-import { Field } from '../components/field';
+
 import React, { Component } from 'react';
 import cloneDeep from 'lodash/cloneDeep';
 import includes from 'lodash/includes';
@@ -149,29 +149,13 @@ function getDraggableItem(draggableId, thisMain) {
     item = thisMain.state.FixedValueItem.filter(x => x.id == draggableId.split('_')[3])[0];
 
   }
-  else if (draggableId.includes('Operators_Field_Int_')) {
-    item = thisMain.fields.integerFields.filter(x => x.id == draggableId.split('_')[3])[0];
-
-  }
-  else if (draggableId.includes('Operators_Field_String_')) {
-    item = thisMain.fields.stringFields.filter(x => x.id == draggableId.split('_')[3])[0];
-
-  }
-  else if (draggableId.includes('Operators_Field_Date_')) {
-    item = thisMain.fields.dateFields.filter(x => x.id == draggableId.split('_')[3])[0];
-
-  }
+ 
   else if (draggableId.includes('Operands_Custom_Item_')) {
     item = thisMain.state.customOperandsItem.filter(x => x.id == draggableId.split('_')[3])[0];
 
   }
-  else if (draggableId.includes('Operators_Field_Model_')) {
-    item = thisMain.fields.modelFieldsSearch.filter(x => x.id == draggableId.split('_')[3])[0];
 
-  }
-  else {
-    item = thisMain.state.dateFields.filter(x => x.id == draggableId.split('_')[3])[0];
-  }
+
 
   return item;
 }
@@ -327,28 +311,7 @@ function createComponentJsonData(source, destination, draggableId, thisMain) {
     componentIndex++;
 
   }
-  else if (item.componentType == 'Field') {
-    thisMain.designerState[guidId + "Value"] = {};
-    var itemproperty = item.fieldComponentProperty && item.fieldComponentProperty.find((x) => x.uiProperty.name == "value");
-    var componentVal = thisMain.designerState[guidId + "Value"];
-    componentVal.value = item.fieldCode;
-    componentVal.property = itemproperty ? itemproperty.uiProperty.name : "Select Property";
-    componentObj = {
-      order: componentIndex,
-      guidId: guidId,
-      itemContent: item.content,
-      componentType: item.componentType,
-      component: item.content,
-      fieldCode: item.fieldCode,
-      fieldComponentProperty: item.fieldComponentProperty,
-      type: item.type,
-      valueType: item.valueType,
-      child: [],
-      value: thisMain.designerState[guidId + "Value"]
-    };
-    componentIndex++;
 
-  }
   else {
     componentObj = {
       order: componentIndex,
@@ -396,16 +359,10 @@ function createComponentJsonData(source, destination, draggableId, thisMain) {
               componentObj.valueType = preOperand.returnType;
             }
             else {
-              if (thisMain.props.workWithFieldProperty) {
-                var preItemPropData = preOperand.fieldComponentProperty.find(x => x.uiProperty.name == preOperand.value.property).dataType;
-                componentObj.componentType = preItemPropData.name;
-                componentObj.valueType = preItemPropData.name;
-                componentObj.preItemGuId = preOperand.guidId;
-              }
-              else {
+             
                 componentObj.componentType = preOperand.valueType;
                 componentObj.valueType = preOperand.valueType;
-              }
+              
             }
 
           }
@@ -416,34 +373,7 @@ function createComponentJsonData(source, destination, draggableId, thisMain) {
       }
       componentObj.depthIndex = parent.depthIndex + 1;
       parent.child.push(componentObj);
-      if (parent && parent.componentType == "Function" && parent.parameter[parent.child.length - 1] == "List" && parent.parameter[parent.child.length] == "FieldPicklist") {
 
-        var fieldGuid = guid();
-        thisMain.designerState[fieldGuid + "Value"] = {};
-        var functionChild = {
-          order: componentIndex,
-          guidId: fieldGuid,
-          itemContent: "Select List Attribute",
-          componentType: "Field",
-          component: "LIST_FIELD_ATTRIBUTE",
-          fieldCode: '',
-          parentCode: thisMain.designerState[componentObj.guidId + "Value"],
-          type: "Operands",
-          valueType: "LIST_FIELD_ATTRIBUTE",
-          child: [],
-          relatedListItem: componentObj.guidId,
-          value: thisMain.designerState[fieldGuid + "Value"]
-        };
-        componentIndex++;
-
-        functionChild.depthIndex = parent.depthIndex + 1;
-        parent.child.push(functionChild);
-
-        if (componentObj.valueType == "Model") {
-          thisMain.designerState[parent.guidId + "Value"] = thisMain.designerState[componentObj.guidId + "Value"];
-        }
-
-      }
 
     }
     stackPush('Undo', cloneDeep(thisMain.designerState['jsonChildData']));
@@ -472,16 +402,10 @@ function createComponentJsonData(source, destination, draggableId, thisMain) {
             componentObj.valueType = preOperand.returnType;
           }
           else {
-            if (thisMain.props.workWithFieldProperty) {
-              var preItemPropData = preOperand.fieldComponentProperty.find(x => x.uiProperty.name == preOperand.value.property).dataType;
-              componentObj.componentType = preItemPropData.name;
-              componentObj.valueType = preItemPropData.name;
-              componentObj.preItemGuId = preOperand.guidId;
-            }
-            else {
+           
               componentObj.componentType = preOperand.valueType;
               componentObj.valueType = preOperand.valueType;
-            }
+            
           }
 
         }
@@ -827,18 +751,10 @@ function componentBuilder(item, thisMain, childcomp) {
       child: [],
       value: thisMain.designerState[item.guidId + "Value"]
     };
-    if (thisMain.props.workWithFieldProperty && thisMain.designerState[item.preItemGuId + "Value"] && thisMain.state['jsonChildData'] && thisMain.state['jsonChildData'].length) {
-      var fieldItem = findParent(thisMain.state['jsonChildData'], item.preItemGuId);
-      var preItemPropData = fieldItem.fieldComponentProperty.find(x => x.uiProperty.name == thisMain.designerState[item.preItemGuId + "Value"].property).dataType;
-      componentObj.componentType = preItemPropData.name;
-      componentObj.valueType = preItemPropData.name;
-      componentObj.preItemGuId = item.preItemGuId;
-
-    }
-    else {
+  
 
       componentObj.preItemGuId = item.preItemGuId;
-    }
+    
 
 
     queryObj = componentObj.value.value ? item.componentType == 'String' ? '"' + componentObj.value.value + '"' : componentObj.value.value : item.itemContent;
@@ -848,45 +764,7 @@ function componentBuilder(item, thisMain, childcomp) {
 
   }
 
-  else if (item.componentType == "Field") {
 
-    if (!thisMain.designerState[item.guidId + "Value"])
-      thisMain.designerState[item.guidId + "Value"] = item.value;
-
-    componentObj = {
-      guidId: item.guidId,
-      depthIndex: item.depthIndex,
-      itemContent: item.itemContent,
-      componentType: item.componentType,
-      component: item.component,
-      type: item.type,
-      valueType: item.valueType,
-      fieldCode: item.fieldCode,
-      fieldComponentProperty: item.fieldComponentProperty,
-      child: [],
-      relatedListItem: item.relatedListItem,
-
-      value: thisMain.designerState[item.guidId + "Value"]
-    };
-    var fieldValue = componentObj.value ? componentObj.value.value ? componentObj.value.value : item.fieldCode : item.fieldCode;
-    var itemProperty = componentObj.value ? componentObj.value.property : null;
-    displayQueryObj = thisMain.props.workWithFieldProperty ? fieldValue + "." + itemProperty : fieldValue;
-    if (thisMain.props.fieldQueryFormula != null) {
-      queryObj = thisMain.props.fieldQueryFormula.replace('{field}', fieldValue);
-      queryObj = thisMain.props.workWithFieldProperty ? queryObj.replace('{property}', itemProperty) : queryObj;
-    }
-    else {
-      queryObj = thisMain.props.workWithFieldProperty ? fieldValue + "." + itemProperty : fieldValue;
-    }
-
-    if (item.relatedListItem) {
-
-      componentObj.parentCode = thisMain.designerState[item.relatedListItem + "Value"];
-    }
-    childItem = (<Field itemProperty={itemProperty} workWithFieldProperty={thisMain.props.workWithFieldProperty} fieldComponentProperty={item.fieldComponentProperty} parentCode={componentObj.parentCode} onChangeComponentValue={thisMain.onChangeComponentValue} valueType={item.valueType} depth={item.depthIndex} type={item.type} context={thisMain.props.context} draggableId={item.guidId} itemContent={item.itemContent} component={item.component} />
-    );
-
-  }
 
   return { child: childItem, jsondata: componentObj, queryObj: queryObj, displayQueryObj: displayQueryObj };
 }

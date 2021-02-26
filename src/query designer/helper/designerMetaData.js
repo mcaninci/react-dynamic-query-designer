@@ -228,7 +228,7 @@ export  var data=
           componentType: "Function",
            returnType: "Integer",
            parameter: [
-            "List","FieldPicklist"
+            "List","List"
            ],
            valueType: "Integer"
          },
@@ -240,7 +240,7 @@ export  var data=
            componentType: "Function",
             returnType: "List",
             parameter: [
-              "List", "FieldPicklist", "String"
+              "List", "List", "String"
             ],
             valueType: "Filter"
           }
@@ -641,7 +641,7 @@ export  var data=
         }
       ],
 
-      fieldQueryFormula:"transactionData['{field}']",
+    
       customQueryFormula:"{customItem}",
       queryTextFormula:"if({query}){return true;}else{return false;}",
        queryLanguange: "c#",

@@ -155,10 +155,6 @@ function groupFilter(searchText, thisMain, filterType) {
       let returnVal = thisMain.state.functionSearchItem.map((item) => { return meta.data.props[item].filter((item) => stringLowerCase(item.content).indexOf(searchText) !== -1); });
       return returnVal;
     }
-    else if (filterType == "Fields") {
-      let returnVal = thisMain.state.fieldSearchItem.map((item) => { var stateName = item.replace("Search", ""); return thisMain.fields[stateName].filter((item) => stringLowerCase(item.content).indexOf(searchText) !== -1); });
-      return returnVal;
-    }
     else if (filterType == "Operator") {
       let returnVal = thisMain.state.operatorSearchItem.map((item) => { return meta.data.props[item].filter((item) => stringLowerCase(item.content).indexOf(searchText) !== -1); });
       return returnVal;
@@ -184,12 +180,7 @@ function groupFilter(searchText, thisMain, filterType) {
     if (filterType == "Functions") {
       let returnVal = thisMain.state.functionSearchItem.map((item) => { return meta.data.props[item] });
       return returnVal;
-    } else if (filterType == "Fields") {
-
-      let returnVal = thisMain.state.fieldSearchItem.map((item) => { var stateName = item.replace("Search", ""); return thisMain.fields[stateName] });
-      return returnVal;
-
-    }
+    } 
     else if (filterType == "Operator") {
 
       let returnVal = thisMain.state.operatorSearchItem.map((item) => { return meta.data.props[item] });
@@ -232,9 +223,6 @@ function onChangeGroupFilter(event, thisMain, filterType) {
     if (filterType == "Functions") {
       var searchedStateList = thisMain.state.functionSearchItem;
     }
-    else if (filterType == "Fields") {
-      searchedStateList = thisMain.state.fieldSearchItem;
-    }
     else if (filterType == "Operator") {
       searchedStateList = thisMain.state.operatorSearchItem;
     }
@@ -242,12 +230,8 @@ function onChangeGroupFilter(event, thisMain, filterType) {
       searchedStateList = thisMain.state.customSearchItem;
     }
     filteredFields.forEach((item, index) => {
-      if (filterType == "Fields") {
-        thisMain.fields[searchedStateList[index]] = item;
-      }
-      else {
         thisMain.state[searchedStateList[index]] = item;
-      }
+    
     });
     thisMain.leftTab = getLeftTab(thisMain);
     thisMain.forceUpdate();
@@ -298,6 +282,9 @@ function renderGroupFilter(thisMain, filterType) {
 
   )
 }
+
+
+
 
 function getSearchArea(thisMain, matchSoruceName) {
   var searchArea = (<div style={thisMain.state.paperStyle} zdepth={1}>
@@ -440,34 +427,6 @@ function getLeftTab(thisMain) {
     style={{ boxShadow: 'none' }}
     context={thisMain.props.context}>
   </Expander>);
-  if (thisMain.fields) {
-    var leftTabOperatorFieldInt = (<Expander ref={(r) => thisMain.integerFieldsSearch = r}  overridesClasses={overridesClasses(true)} onChange={thisMain.expenderOnchange.bind(thisMain, 'leftTabOperatorFieldInt')} isExpanded={thisMain.state.leftTabOperatorFieldInt} header={"Fields Integer"} children={
-      renderFilter(thisMain.fields.integerFieldsSearch, "Operators_Field_Int_", 'integerFieldsSearch', thisMain, false)
-    }
-      style={{ boxShadow: 'none' }}
-      context={thisMain.props.context}>
-    </Expander>);
-    var leftTabOperatorFieldString = (<Expander ref={(r) => thisMain.stringFieldsSearch = r} overridesClasses={overridesClasses(true)} hideShadow={true} onChange={thisMain.expenderOnchange.bind(thisMain, 'leftTabOperatorFieldString')} isExpanded={thisMain.state.leftTabOperatorFieldString} header={"Fields String"} children={
-      renderFilter(thisMain.fields.stringFieldsSearch, "Operators_Field_String_", 'stringFieldsSearch', thisMain, false)
-    }
-      style={{ boxShadow: 'none' }}
-      context={thisMain.props.context}>
-    </Expander>);
-    var leftTabOperatorFieldDate = (<Expander ref={(r) => thisMain.dateFieldsSearch = r}  overridesClasses={overridesClasses(true)} hideShadow={true} onChange={thisMain.expenderOnchange.bind(thisMain, 'leftTabOperatorFieldDate')} isExpanded={thisMain.state.leftTabOperatorFieldDate} header={"Fields Date"} children={
-      renderFilter(thisMain.fields.dateFieldsSearch, "Operators_Field_Date_", 'dateFieldsSearch', thisMain, false)
-    }
-      style={{ boxShadow: 'none' }}
-      context={thisMain.props.context}>
-    </Expander>);
-
-    var leftTabOperatorFieldModel = (<Expander ref={(r) => thisMain.modelFieldsSearch = r}  overridesClasses={overridesClasses(true)} hideShadow={true} onChange={thisMain.expenderOnchange.bind(thisMain, 'leftTabOperatorFieldModel')} isExpanded={thisMain.state.leftTabOperatorFieldModel} header={<div style={{ width: '200px', display: 'flex' }}>Fields Model</div>} children={
-      renderFilter(thisMain.fields.modelFieldsSearch, "Operators_Field_Model_", 'modelFieldsSearch', thisMain, false)
-    }
-      style={{ boxShadow: 'none' }}
-      context={thisMain.props.context}>
-    </Expander>);
-  }
-  var leftTabOperandAllField = (<div> {leftTabOperatorFieldInt}  {leftTabOperatorFieldString} {leftTabOperatorFieldDate} {leftTabOperatorFieldModel}</div>);
 
 
   var leftTabOperandAllFunction = (<div> {leftTabOperandsFixedValue}   {leftTabOperandsFunctionString}   {leftTabOperandsFunctionNumber}  {leftTabOperandsFunctionDate} </div>);
@@ -536,12 +495,7 @@ function getLeftTab(thisMain) {
 
               context={thisMain.props.context}>
             </Expander>
-            {/* <Expander  ref={(r) => thisMain.leftTabOperandAllField = r}  overridesClasses={overridesClasses(false)} hideShadow={true} justButtonCanExpand={true} onChange={thisMain.expenderOnchange.bind(thisMain, 'leftTabOperatorAllField')} isExpanded={thisMain.state.leftTabOperatorAllField} header={<div style={{ width: '250px', display: 'flex' }}><div style={{ float: 'left', marginRight: '5px' }}>Fields</div > <div style={{ float: 'right', marginLeft: 'auto', order: '2', marginRight: '5px' }}> {renderGroupFilter(thisMain, "Fields")}</div></div>} children={
-              leftTabOperandAllField
-            }
-
-              context={thisMain.props.context}>
-            </Expander> */}
+         
             {
               thisMain.state.customOperandsItem ? leftTabOperatorCustom : ""
             }

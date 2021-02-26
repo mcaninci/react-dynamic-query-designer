@@ -10,7 +10,7 @@ import { Brackets } from './components/brackets.js';
 
 import ReactDOMServer from 'react-dom/server';
 import { guid, getGridCellStyle, getDropStyle, createComponentJsonData, getListStyle, getItemStyle, drawDesign, getQuickPanelStyle, designerRuleController, findParent, updateChildDepth } from './helper/componentHelper';
-import { getLeftTab, stackPush, stackPop, getleftPaneContent, filter, fieldFilter, getRightPaneContent, getcodeModeContent, getUpBarContent, getquickPanel, getRightClickMenu } from './helper/designerHelper';
+import { getLeftTab, stackPush, stackPop, getleftPaneContent, filter, getRightPaneContent, getcodeModeContent, getUpBarContent, getquickPanel, getRightClickMenu } from './helper/designerHelper';
 import { forEach } from 'min-dash';
 import PropTypes, { element } from 'prop-types';
 import { Card } from '@material-ui/core';
@@ -33,21 +33,20 @@ var rightClickMenu;
 
 var jsonChildData = [];
 var mainCustomCSS = [];
-const fields = [];
+
 
 export class BBreDesigner extends Component {
 
   static propTypes = {
     queryLanguange: PropTypes.string,
     isExpression: PropTypes.bool,
-    fieldQueryFormula: PropTypes.string,
+ 
     customQueryFormula: PropTypes.string,
     customOperandsItem: PropTypes.array,
     queryTextFormula: PropTypes.string,
     operatorsFunctionConvertType: PropTypes.string,
-    fieldDefinitionIdList: PropTypes.array,
+
     showDisplayQuery: PropTypes.bool,
-    workWithFieldProperty: PropTypes.bool
 
   };
 
@@ -55,25 +54,21 @@ export class BBreDesigner extends Component {
 
     queryLanguange: 'c#',
     isExpression: false,
-    fieldQueryFormula: null,
     customQueryFormula: "{customItem}",
     queryTextFormula: "{query}",
     showDisplayQuery: true,
     codeModeExpanded: false,
     leftTabOperandsFixedValue: false,
     leftTabOperandAllFunction: false,
-    leftTabOperatorAllField: false,
+
     leftTabOperatorCustom: false,
     leftTabOperandsFunctionNumber: false,
     leftTabOperandsFunctionString: false,
     leftTabOperatorsRelational: false,
     leftTabOperatorsExpression: false,
-    leftTabOperatorFieldString: false,
-    leftTabOperatorFieldInt: false,
-    leftTabOperatorFieldDate: false,
-    leftTabOperatorFieldModel: false,
-    workWithFieldProperty: false,
-    fieldDefinitionIdList: []
+
+
+
   };
 
   constructor(props, context) {
@@ -96,7 +91,7 @@ export class BBreDesigner extends Component {
       pasteButtonDisabled: false,
       queryTextFormula: this.props.queryTextFormula,
       functionSearchItem: ['NumberFunctionItem', 'stringFunctionItem', 'dateFunctionItem'],
-      fieldSearchItem: ['integerFieldsSearch', 'stringFieldsSearch', 'dateFieldsSearch', 'modelFieldsSearch'],
+  
       operatorSearchItem: ['relationalOperatorsItem', 'logicalOperatorsItem', 'expressionOperatorsItem'],
       customSearchItem: ['customOperandsItem']
 
@@ -147,7 +142,7 @@ export class BBreDesigner extends Component {
       main: [],
       jsonChildData: []
     };
-    // this.getAllField();
+
     this.leftTab = getLeftTab(this);
 
     rightPaneContent = getRightPaneContent(this);
@@ -187,37 +182,7 @@ export class BBreDesigner extends Component {
 
       componentVal.value = value;
     }
-    else {
-      var fieldItem = findParent(_that.designerState['jsonChildData'], draggableId);
-
-
-      componentVal.property = value;
-      if (item) {
-        var itemSearchArray;
-        var targetField = "";
-        if ([3, 4, 5, 6, 10, 12, 13, 14].includes(Number(item.DataTypeId))) {
-          targetField = "integerFields";
-        }
-        else if ([7].includes(Number(item.DataTypeId))) {
-          targetField = "stringFields";
-        }
-        else if ([663, 9].includes(Number(item.DataTypeId))) {
-          targetField = "dateFields";
-        }
-        else if ([663, 9, 7, 4, 5, 6, 10, 12, 13, 14].includes(Number(item.DataTypeId))) {
-          targetField = "modelFields";
-        }
-        itemSearchArray = _that.fields[targetField];
-        var selectedItem = itemSearchArray.find(x => x.fieldCode == item.FieldCode);
-        componentVal.value = item.FieldCode;
-        fieldItem.itemContent = item.FieldName;
-
-        fieldItem.component = item.FieldName;
-        fieldItem.fieldCode = item.FieldCode;
-        fieldItem.fieldComponentProperty = selectedItem ? selectedItem.fieldComponentProperty : item.fieldComponentProperty;
-        componentVal.property = fieldItem.fieldComponentProperty && fieldItem.fieldComponentProperty.find((x) => x.uiProperty.name == "value").uiProperty.name;
-      }
-    }
+ 
 
 
     drawDesign(_that.designerState['jsonChildData'], _that);
