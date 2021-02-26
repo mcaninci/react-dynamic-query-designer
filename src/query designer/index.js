@@ -58,16 +58,6 @@ export class BBreDesigner extends Component {
     queryTextFormula: "{query}",
     showDisplayQuery: true,
     codeModeExpanded: false,
-    leftTabOperandsFixedValue: false,
-    leftTabOperandAllFunction: false,
-
-    leftTabOperatorCustom: false,
-    leftTabOperandsFunctionNumber: false,
-    leftTabOperandsFunctionString: false,
-    leftTabOperatorsRelational: false,
-    leftTabOperatorsExpression: false,
-
-
 
   };
 
@@ -98,16 +88,16 @@ export class BBreDesigner extends Component {
 
     };
     _that = this;
-    this.state.NumberFunctionItem = meta.data.props.NumberFunctionItem;
-    this.state.QuickPanel = meta.data.props.QuickPanel;
-    this.state.stringFunctionItem = meta.data.props.stringFunctionItem;
-    this.state.dateFunctionItem = meta.data.props.dateFunctionItem;
-    this.state.relationalOperatorsItem = meta.data.props.relationalOperatorsItem;
-    this.state.logicalOperatorsItem = meta.data.props.logicalOperatorsItem;
-    this.state.expressionOperatorsItem = meta.data.props.expressionOperatorsItem;
-    this.state.FixedValueItem = meta.data.props.FixedValueItem;
-    this.state.functionConvertType = meta.data.props.functionConvertType.find(x => x.language == this.state.queryLanguange).functions;
-    this.state.operatorsConvertType = meta.data.props.operatorsConvertType.find(x => x.language == this.state.queryLanguange).operators;
+    this.state.NumberFunctionItem = this.props.NumberFunctionItem || meta.data.props.NumberFunctionItem;
+    this.state.QuickPanel = this.props.QuickPanel ||meta.data.props.QuickPanel;
+    this.state.stringFunctionItem = this.props.stringFunctionItem ||meta.data.props.stringFunctionItem;
+    this.state.dateFunctionItem =this.props.dateFunctionItem || meta.data.props.dateFunctionItem;
+    this.state.relationalOperatorsItem = this.props.relationalOperatorsItem ||meta.data.props.relationalOperatorsItem;
+    this.state.logicalOperatorsItem = this.props.logicalOperatorsItem ||meta.data.props.logicalOperatorsItem;
+    this.state.expressionOperatorsItem = this.props.expressionOperatorsItem ||meta.data.props.expressionOperatorsItem;
+    this.state.FixedValueItem = this.props.FixedValueItem ||meta.data.props.FixedValueItem;
+    this.state.functionConvertType = this.props.functionConvertType ||meta.data.props.functionConvertType.find(x => x.language == this.state.queryLanguange).functions;
+    this.state.operatorsConvertType = this.props.operatorsConvertType ||meta.data.props.operatorsConvertType.find(x => x.language == this.state.queryLanguange).operators;
 
     this.state.operatorsFunctionConvertType = meta.data.props.operatorsFunctionConvertType.find(x => x.language == this.state.queryLanguange);
     if (!this.state.operatorsFunctionConvertType) {

@@ -1,12 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
+import QueryDesigner from './query designer/index';
 import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <QueryDesigner {...this.props} >
+   
+      </QueryDesigner>
   </React.StrictMode>,
   document.getElementById('root')
 );
